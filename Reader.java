@@ -8,19 +8,24 @@ public class Reader{
 	int fileIndex = 1;
 	FileReader lecture = null;
 	BufferedReader buff = null;
-	//String[] fichiers = new String[5];
 	String fichiers [] = {"test1.txt", "test2.txt","test3.txt", "test4.txt","test5.text"};
 
 		try{
 			for (int i = 0; i < fichiers.length; i++){
-				lecture = new FileReader("./Project3Testfiles/test"+fileIndex+".txt");    
+				lecture = new FileReader("./Project3Testfiles/test"+fileIndex+".txt"); 
 				buff = new BufferedReader(lecture);
 				String line;
 				fileIndex++;
+				WordCount fileWordCounter = new WordCount();
 		
 				while ((line = buff.readLine()) != null){
-				System.out.println(line);
+					System.out.println("Input: \t" + line);
+				    fileWordCounter.addWordsLine(line);
+				    System.out.println();	
 				}
+			
+			fileWordCounter.showTheFrequency();
+			 
 			}	
 
 		}
