@@ -4,30 +4,57 @@ import java.io.*;
 public class Reader{
 
 	public static void main  (String args[]){
+    
+    int firstFileIndex;
+    int secondFileIndex;
+   	String fichiers [] = {"test1.txt", "test2.txt","test3.txt", "test4.txt","test5.txt"};
 
-	int fileIndex = 1;
+    try{
+		firstFileIndex = Integer.parseInt(args[0]);
+		secondFileIndex = Integer.parseInt(args[1]);
+		if(firstFileIndex < 1 || firstFileIndex > fichiers.length || secondFileIndex < 1 || secondFileIndex > fichiers.length)
+			throw new Exception("File indexes are not right.");
+    }
+    catch (Exception ex){
+		System.out.println("Problem with arguments please use 2 numbers.");
+		return;
+	}
+	
 	FileReader lecture = null;
 	BufferedReader buff = null;
-	String fichiers [] = {"test1.txt", "test2.txt","test3.txt", "test4.txt","test5.text"};
 
 		try{
-			for (int i = 0; i < fichiers.length; i++){
-				lecture = new FileReader("./Project3Testfiles/test"+fileIndex+".txt"); 
+			//read the first file
+				lecture = new FileReader("./Project3Testfiles/"+fichiers[firstFileIndex-1]); 
 				buff = new BufferedReader(lecture);
 				String line;
-				fileIndex++;
 				WordCount fileWordCounter = new WordCount();
 		
 				while ((line = buff.readLine()) != null){
-					System.out.println("Input: \t" + line);
-				    fileWordCounter.addWordsLine(line);
-				    System.out.println();	
+					//System.out.println("Input: \t" + line);
+					fileWordCounter.addWordsLine(line);
 				}
-			
-			fileWordCounter.showTheFrequency();
-			 
-			}	
+				fileWordCounter.showTheFrequency();
 
+				lecture.close();
+				buff.close();
+				
+			//read the second file
+			    System.out.println("\n");
+				lecture = new FileReader("./Project3Testfiles/"+fichiers[secondFileIndex-1]); 
+				buff = new BufferedReader(lecture);
+				line = "";
+				WordCount fileWordCounter2 = new WordCount();
+		
+				while ((line = buff.readLine()) != null){
+					//System.out.println("Input: \t" + line);
+					fileWordCounter2.addWordsLine(line);
+				}
+					
+				fileWordCounter2.showTheFrequency();
+				
+				FileWordCountComparison fileWordComp = new FileWordCountComparison(fileWordCounter.getHashtable(),fileWordCounter2.getHashtable());
+				fileWordComp.compare();
 		}
 		
 		catch (Exception e){
